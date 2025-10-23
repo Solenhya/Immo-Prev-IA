@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction Immobiliere{% endblock %}
+
+{% block body %}
+    <form id="prediction_form">
+    {% for parametres_dict in parametres_info %}
+        <label for={{parametres_dict.id}} class="form-label">{{parametres_dict.label}}</label>
+        <textarea class="form-control parametre" id={{parametres_dict.id}} rwow="1" name="text" required></textarea>
+    {% endfor %}
+    <button type="submit" id="submit-button" class="btn btn-primary">Prédire le prix</button>
+    <div id="retour_valeur"></div>
+</form>
+{% endblock %}
+
+{% block script_post %}
+<script>
+    const form = document.getElementById('prediction_form');
+    const all_params = document.getElementsByClassName("parametre");
+    const text_return = document.getElementById("retour_valeur");
+    const submit_button = document.getElementById("submit-button");
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        disableform()
+        set_message("Traitement de la demande en cours")
+        const formData = new FormData();
+        for (const textarea of all_params) {
+            formData.append(textarea.id,textarea.value)
+        }
+        try{
+            const generateResponse = await fetch('/predict_immo',
+             {
+                method: 'POST',
+                body: formData
+             })
+            const generateData = await generateResponse.json();
+            set_message(`Estimation du prix : ${generateData.price}`);
+            enableform()
+        }
+        catch(error){
+            console.error('Erreur lors de la soumission:', error);
+            set_message('error', `Erreur: ${error.message}`);
+            enableForm();
+        }
+    });
+    
+    function disableform(){
+        submit_button.disabled = true;
+    }
+    function enableform(){
+        submit_button.disabled = false;
+    }
+    function set_message(message){
+        text_return.innerHTML=message;
+    }
+</script>
+{% endblock %}
+

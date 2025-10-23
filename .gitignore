@@ -33,7 +33,14 @@ MANIFEST
 *.spec
 
 # Installer logs
-pip-log.txt
+data/raw/*.txt
+data/processed/*.csv
+data/processed/*.parquet
+data/external/*.txt
+
+# Keep DVC files and directory structure
+!data/**/*.dvc
+!data/**/.gitkeep
 pip-delete-this-directory.txt
 
 # Unit test / coverage reports
@@ -205,3 +212,15 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+#Ingore les dossiers mlflow
+mlruns/
+mlflow/
+mlflow-env/
+mlartifacts/
+
+#Ignore les data
+data/
+
+#Ignore DVC
+.dvc/
