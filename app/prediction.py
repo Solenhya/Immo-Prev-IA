@@ -21,11 +21,12 @@ def get_model():
 
 
 def model_predict(features:dict):
-    nombre_piece = features.get("Nombre_pieces_principales", 0)
     model = get_model()
     dataframe= pd.DataFrame([features])
     prediction = model.predict(dataframe)
-    return f'Resultat predicition : {prediction}'
+    logger.info(f"Prediction effectuer prix estimer : {prediction}")
+    return prediction
+    
 
 if __name__ == "__main__":
     sample_features = {
