@@ -2,22 +2,29 @@ import mlflow.sklearn
 import logging
 import pandas as pd
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 model = None
+model_info = None
+commande_load = f"models:/model_ArnFab/latest"
+mlflow.set_tracking_uri(uri='http://localhost:5000')
+logger.debug(f"connection a {mlflow.get_tracking_uri()} et récuperation de {commande_load}")
 def get_model():
     global model
     if model is None:
-        run_id = "dd22668f957547749847199709266af8"
-
-        commande_load = f"models:/model_test/latest"
-        mlflow.set_tracking_uri(uri='http://localhost:5000')
-        logger.debug(mlflow.get_tracking_uri())
-        logger.info(f"Chargement du modèle depuis MLflow avec le run_id: {run_id}")
+        logger.info(f"Chargement du modèle depuis MLflow avec la commande: {commande_load}")
         model = mlflow.sklearn.load_model(commande_load)
         logger.info(f"Modèle chargé à l'adresse {commande_load}")
     return model
+
+def get_model_info():
+    global model_info
+    if model_info is None:
+        logger.info(f"Chargement des informations du modèle depuis MLflow avec la commande: {commande_load}")
+        model_info = mlflow.models.get_model_info(commande_load)
+        logger.info(f"Information du modèle chargé à l'adresse {commande_load}")
+    return model_info
 
 
 def model_predict(features:dict):

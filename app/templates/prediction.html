@@ -6,7 +6,7 @@
     <form id="prediction_form">
     {% for parametres_dict in parametres_info %}
         <label for={{parametres_dict.id}} class="form-label">{{parametres_dict.label}}</label>
-        <textarea class="form-control parametre" id={{parametres_dict.id}} rwow="1" name="text" required></textarea>
+        <input type={{parametres_dict.type}} class="form-control parametre" id={{parametres_dict.id}} rwow="1" name="text" required></input>
     {% endfor %}
     <button type="submit" id="submit-button" class="btn btn-primary">Prédire le prix</button>
     <div id="retour_valeur"></div>

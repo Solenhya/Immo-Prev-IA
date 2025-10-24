@@ -3,11 +3,20 @@ from fastapi.templating import Jinja2Templates
 router  = APIRouter()
 templates = Jinja2Templates(directory="templates")
 from . import prediction
+from . import handle_input
+import logging
+
+logger = logging.getLogger(__name__)
+
 #Pour l'instant set comme sa mais a generer en fonction du modèle en production
 parameters = [{"label":"Surface du bati","id":"Surface_reelle_bati"},{"label":"Surface terrain","id":"Surface_terrain"},
               {"label":"Nombre de pieces","id":"Nombre_pieces_principales"},{"label":"Type (Appartement ou Maison)","id":"Type_local"}]
 
-@router.get("/prediction_immo")
+logger.info(f"Parametres static: {parameters}")
+parameters = handle_input.get_parameters_dynamique()
+logger.info(f"Parametres charger par le modèle : {parameters}")
+
+@router.get("/")
 async def prediction_page(request:Request):
     return templates.TemplateResponse("prediction.html",{"request":request,"parametres_info":parameters})
 
