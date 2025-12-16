@@ -1,0 +1,6 @@
+fastapi[standard]
+mlflow
+python-dotenv
+joblib
+pandas
+scikit-learn
