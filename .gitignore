@@ -224,3 +224,6 @@ data/
 
 #Ignore DVC
 .dvc/
+data/
+Notebook/*.csv
+Notebook/brut2025.txt

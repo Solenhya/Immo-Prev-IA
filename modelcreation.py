@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 def get_data():
-    file_path = "data/processed/DVF_2020_2025_consolidated.csv"
+    file_path = "data/processed/2025.csv"
     nrows = 10000
     df = pd.read_csv(file_path, nrows=nrows )
     logger.info(f"📊 Données chargées: {len(df):,} lignes")
