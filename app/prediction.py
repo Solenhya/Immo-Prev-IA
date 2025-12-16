@@ -13,17 +13,27 @@ logger.debug(f"connection a {mlflow.get_tracking_uri()} et récuperation de {com
 def get_model():
     global model
     if model is None:
-        logger.info(f"Chargement du modèle depuis MLflow avec la commande: {commande_load}")
-        model = mlflow.sklearn.load_model(commande_load)
-        logger.info(f"Modèle chargé à l'adresse {commande_load}")
+        try:
+            logger.info(f"Chargement du modèle depuis MLflow avec la commande: {commande_load}")
+            model = mlflow.sklearn.load_model(commande_load)
+            logger.info(f"Modèle chargé à l'adresse {commande_load}")
+        except:
+            return None
     return model
 
 def get_model_info():
     global model_info
     if model_info is None:
-        logger.info(f"Chargement des informations du modèle depuis MLflow avec la commande: {commande_load}")
-        model_info = mlflow.models.get_model_info(commande_load)
-        logger.info(f"Information du modèle chargé à l'adresse {commande_load}")
+        try:
+            logger.info(f"Chargement des informations du modèle depuis MLflow avec la commande: {commande_load}")
+            model_info = mlflow.models.get_model_info(commande_load)
+            logger.info(f"Information du modèle chargé à l'adresse {commande_load}")
+        except:
+            default = { "signature":{
+                "input":[]
+            }
+            }
+            return default
     return model_info
 
 
