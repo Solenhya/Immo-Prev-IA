@@ -29,7 +29,6 @@ features = [
 
 target = ['Valeur_fonciere']
 
-
 def prepare_features(df):
     df = df[features + target]
     df = df[df['Type_local'].isin(['Maison', 'Appartement'])]
@@ -86,7 +85,7 @@ def train_model (experiment_name):
 
         input_example = X_train.head(1)
         signature = infer_signature(X_train, model.predict(X_train))
-        mlflow.sklearn.log_model(model,registered_model_name = 'model_test')
+        mlflow.sklearn.log_model(model, registered_model_name='model_test', signature=signature, input_example=input_example)
 
 
 if __name__ == "__main__":

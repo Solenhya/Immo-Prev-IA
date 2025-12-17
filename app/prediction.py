@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 model = None
 model_info = None
-commande_load = f"models:/model_ArnFab/latest"
+commande_load = f"models:/model_test/latest"
 mlflow.set_tracking_uri(uri='http://localhost:5000')
 logger.debug(f"connection a {mlflow.get_tracking_uri()} et récuperation de {commande_load}")
 def get_model():
