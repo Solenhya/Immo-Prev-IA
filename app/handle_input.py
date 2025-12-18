@@ -6,6 +6,8 @@ from . import prediction
 import logging
 
 logger = logging.getLogger(__name__)
+
+
 #Basique genere l'UI avec label = id et transmets basiquement
 def get_parameters_dynamique():
     info = prediction.get_model_info()
