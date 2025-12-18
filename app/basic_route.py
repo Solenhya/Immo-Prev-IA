@@ -35,6 +35,6 @@ async def predict_immo(request:Request):
     return {"price":prix[0]}
 
 
-@app.get("/metrics")
+@router.get("/metrics")
 def metrics():
     return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
