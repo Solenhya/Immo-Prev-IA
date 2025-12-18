@@ -12,6 +12,9 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
+from dotenv import load_dotenv
+load_dotenv()
+
 def get_data():
     file_path = "data/processed/2025.csv"
     nrows = 10000
@@ -28,7 +31,6 @@ features = [
 ]
 
 target = ['Valeur_fonciere']
-
 
 def prepare_features(df):
     df = df[features + target]
@@ -86,7 +88,7 @@ def train_model (experiment_name):
 
         input_example = X_train.head(1)
         signature = infer_signature(X_train, model.predict(X_train))
-        mlflow.sklearn.log_model(model,registered_model_name = 'model_test')
+        mlflow.sklearn.log_model(model, registered_model_name='model_test', signature=signature, input_example=input_example)
 
 
 if __name__ == "__main__":

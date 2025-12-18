@@ -1,0 +1,2 @@
+MLFLOW_URI="localhost:5000"
+MODEL_NAME="model_test"

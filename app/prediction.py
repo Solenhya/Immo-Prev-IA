@@ -1,15 +1,20 @@
 import mlflow.sklearn
 import logging
 import pandas as pd
+import os
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 model = None
 model_info = None
-commande_load = f"models:/model_ArnFab/latest"
-mlflow.set_tracking_uri(uri='http://localhost:5000')
-logger.debug(f"connection a {mlflow.get_tracking_uri()} et récuperation de {commande_load}")
+try:
+    commande_load = f"models:/{os.getenv('MODEL_NAME')}/latest"
+    mlflow.set_tracking_uri(uri=f'http://{os.getenv("MLFLOW_URI")}')
+    logger.debug(f"connection a {mlflow.get_tracking_uri()} et récuperation de {commande_load}")
+except Exception as e:
+    logger.error(f"Erreur lors de la configuration de MLflow: {e}")
+
 class Empty:
     pass
 
@@ -34,7 +39,7 @@ def get_model_info():
         except:
             default = Empty()
             default.signature = Empty()
-            default.signature.inputs=[]
+            default.signature.inputs = []
             return default
     return model_info
 
