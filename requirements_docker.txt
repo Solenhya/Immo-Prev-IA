@@ -6,3 +6,4 @@ pandas
 scikit-learn
 prometheus-client
 python-dotenv
+shap
