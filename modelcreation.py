@@ -12,6 +12,9 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
+from dotenv import load_dotenv
+load_dotenv()
+
 def get_data():
     file_path = "data/processed/2025.csv"
     nrows = 10000
