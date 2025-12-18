@@ -7,9 +7,16 @@ logger = logging.getLogger(__name__)
 
 model = None
 model_info = None
-commande_load = f"models:/model_test/latest"
-mlflow.set_tracking_uri(uri='http://localhost:5000')
-logger.debug(f"connection a {mlflow.get_tracking_uri()} et récuperation de {commande_load}")
+try:
+    commande_load = f"models:/model_test/latest"
+    mlflow.set_tracking_uri(uri='http://localhost:5000')
+    logger.debug(f"connection a {mlflow.get_tracking_uri()} et récuperation de {commande_load}")
+except Exception as e:
+    logger.error(f"Erreur lors de la configuration de MLflow: {e}")
+
+class Empty:
+    pass
+
 def get_model():
     global model
     if model is None:
@@ -29,10 +36,9 @@ def get_model_info():
             model_info = mlflow.models.get_model_info(commande_load)
             logger.info(f"Information du modèle chargé à l'adresse {commande_load}")
         except:
-            default = { "signature":{
-                "input":[]
-            }
-            }
+            default = Empty()
+            default.signature = Empty()
+            default.signature.inputs = []
             return default
     return model_info
 
