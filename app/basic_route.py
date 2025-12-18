@@ -1,7 +1,7 @@
 from fastapi import APIRouter , Request
 from fastapi.templating import Jinja2Templates
 router  = APIRouter()
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="app/templates")
 from . import prediction
 from . import handle_input
 import logging
