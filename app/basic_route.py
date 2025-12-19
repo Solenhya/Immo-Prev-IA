@@ -4,9 +4,13 @@ router  = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 from . import prediction
 from . import handle_input
+from . import shapimplementation
 import logging
 from prometheus_client import Counter,generate_latest, CONTENT_TYPE_LATEST
-from fastapi.responses import Response
+from fastapi.responses import Response ,StreamingResponse
+import io 
+import matplotlib.pyplot as plt
+
 logger = logging.getLogger(__name__)
 
 #Pour l'instant set comme sa mais a generer en fonction du modèle en production
@@ -38,3 +42,15 @@ async def predict_immo(request:Request):
 @router.get("/metrics")
 def metrics():
     return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
+
+@router.get("/get_waterfall")
+async def get_waterfall(request:Request):
+    REQUEST_COUNT.inc()
+    form = await request.form()
+    data = dict(form) 
+    plot = shapimplementation.get_shap_waterfall_figure(data)
+    buf = io.BytesIO()
+    plot.savefig(buf, format="png", bbox_inches="tight")
+    plot.clf()  # or plot.close() if you want to close the figure entirely
+    buf.seek(0)
+    return StreamingResponse(buf, media_type="image/png")

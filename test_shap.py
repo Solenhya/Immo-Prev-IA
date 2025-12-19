@@ -19,8 +19,13 @@ valueTest = [{"Surface_reelle_bati": 80,
 
 valueTest2 = valueTest[1]
 if __name__ == "__main__":
+    """
     #params = shapimplementation.compute_shap_values(valueTest)
     fig = shapimplementation.get_shap_waterfall_figure(valueTest2)
     print(type(fig))
     fig.savefig("waterfall.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
+    """
+    plot = shapimplementation.get_summary_test_data()
+    plot.show()
+    input("Press Enter to exit...")
