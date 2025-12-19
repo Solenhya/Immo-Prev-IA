@@ -1,11 +1,14 @@
 import shap
-from .prediction import get_model
+from . import prediction
 import numpy as np
 import pandas as pd
 
 def compute_shap_values(input_data):
-    dataframe= pd.DataFrame([input_data])
-    pipeline = get_model()
+    if isinstance(input_data, list):
+        dataframe= pd.DataFrame(input_data)
+    else:
+        dataframe= pd.DataFrame([input_data])
+    pipeline = prediction.get_model()
     if pipeline is None:
         raise ValueError("Le modèle n'a pas pu être chargé.")
     
@@ -19,5 +22,6 @@ def compute_shap_values(input_data):
     # Calculer les valeurs SHAP
     X_value = preprocessor.transform(dataframe)
     shap_values = explainer.shap_values(X_value)
-    
+    feature_names = preprocessor.get_feature_names_out()
+    shap.summary_plot(shap_values,X_value, feature_names=feature_names)
     return shap_values
