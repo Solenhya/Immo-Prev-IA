@@ -32,6 +32,9 @@ env\Scripts\activate
 # 3. Installer les dépendances
 pip install -r requirements.txt
 ```
+# 4. Commande pour lancer l'image
+```docker pull imagename ```
+```docker run --name appligroupe4 -p 5004:8000 -network p4_network -e MODEL_NAME="model_test" -e MLFLOW_URI="mlflow:5000" -d nom_image ```
 
 ## 🎮 Utilisation
 

@@ -3,6 +3,8 @@ from . import prediction
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from . import dataAccess
+
 import logging
 logger = logging.getLogger(__name__)
 
@@ -89,3 +91,39 @@ def get_shap_waterfall_figure(input_data, max_display=20):
     )
     plt.tight_layout()
     return fig
+
+def get_summary_test_data():
+    data = dataAccess.prepare_features(dataAccess.get_data())
+    features = data[dataAccess.features]
+    explainer, preprocessor = get_shap()
+    X_transformed = preprocessor.transform(features)
+    shap_values = explainer.shap_values(X_transformed)
+    feature_names = preprocessor.get_feature_names_out()
+
+    N = min(len(feature_names), 20)
+    height = max(4, min(0.35 * N, 20))
+
+    fig = plt.figure(figsize=(8, height))
+    shap.summary_plot(
+        shap.Explanation(
+            values=shap_values,
+            base_values=explainer.expected_value,
+            data=X_transformed,
+            feature_names=feature_names
+        ),show=False
+    )
+    return fig
+
+
+def get_shap():
+    pipeline = prediction.get_model()
+    if pipeline is None:
+        raise ValueError("Le modèle n'a pas pu être chargé.")
+    
+    preprocessor = pipeline.named_steps["preprocessor"]
+
+    model_steps = pipeline.named_steps["regressor"]
+    # Utiliser TreeExplainer pour les modèles basés sur des arbres
+    explainer = shap.TreeExplainer(model_steps)
+
+    return explainer,preprocessor
